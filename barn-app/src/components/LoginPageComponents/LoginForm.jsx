@@ -1,17 +1,20 @@
 import React from "react";
 import googleIcon from "../../assets/googleIcon.svg";
-import axios, { CHECK_USER_URL } from '../../axiosConfig';
+import axios, { CHECK_USER_URL } from "../../axiosConfig";
 import { useNavigate } from "react-router-dom";
+import Terms from "./Terms";
+
 const LoginForm = ({
   formik,
   openPopup,
   handleSignInWithGoogle,
   setIsAdmin,
+  isAgreeTerms,
+  setIsAgreeTerms,
 }) => {
   const navigate = useNavigate();
 
   const checkUserEmail = (emailToSend) => {
-
     const data = { email: emailToSend, password: "" };
     axios
       .post(CHECK_USER_URL, data)
@@ -20,9 +23,11 @@ const LoginForm = ({
         if (isAdmin) {
           setIsAdmin(isAdmin);
           navigate("/customer");
+          sessionStorage.setItem("isAdmin", isAdmin);
+          sessionStorage.setItem("typeof", typeof isAdmin);
         } else if (existingCustomer) {
           navigate("/customer");
-          sessionStorage.setItem("userEmail", emailToSend);
+          sessionStorage.setItem("userEmailForm", emailToSend);
         } else {
           openPopup();
         }
@@ -74,6 +79,7 @@ const LoginForm = ({
         </div>
         <div>
           <button
+            disabled={!isAgreeTerms}
             onClick={() => {
               checkUserEmail(formik.values.email);
             }}
@@ -92,6 +98,7 @@ const LoginForm = ({
           <div>
             {/* redirect to userData from google auth */}
             <button
+              disabled={!isAgreeTerms}
               onClick={handleSignInWithGoogle}
               className="login-form-btn red-bg"
               type="submit"
@@ -102,6 +109,10 @@ const LoginForm = ({
           </div>
         </div>
       </form>
+      <Terms
+        isAgreeTerms={isAgreeTerms}
+        setIsAgreeTerms={setIsAgreeTerms}
+      ></Terms>
     </div>
   );
 };

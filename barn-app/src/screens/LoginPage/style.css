@@ -184,7 +184,17 @@
   font-size: 14px;
   color: rgba(115, 115, 115, 1);
  }
-
+ .terms-container {
+  margin-top: 25px;
+  width: 343px;
+  background-color: rgba(247, 247, 247, 0.94);
+  padding: 1rem;
+  color: gray;
+   border-radius: 5px;
+ }
+.terms-link {
+  color: rgb(102, 100, 244);
+}
  @media(max-width: 1120px) {
   .login-title {
     font-size: 60px;
@@ -209,6 +219,9 @@
   .login-form-btn, .login-line-box {
     width: 314px;
   }
+  .terms-container {
+    width: 282px;
+  }
  }
 
   
@@ -224,6 +237,9 @@
   }
   .login-form-btn, .login-line-box {
     width: 274px;
+  }
+  .terms-container {
+    width: 242px;
   }
   .left-login-block {
     width: 200px;
@@ -244,6 +260,9 @@
   }
   .login-form-btn, .login-line-box {
     width: 294px;
+  }
+  .terms-container {
+    width: 262px;
   }
   .form-title {
     font-size: 30px;

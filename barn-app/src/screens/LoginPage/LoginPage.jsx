@@ -1,45 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios, { COMPLETE_DATA_URL, AUTH_GOOGLE_URL } from '../../axiosConfig';
+import axios, {COMPLETE_DATA_URL, AUTH_GOOGLE_URL, CHECK_USER_URL} from '../../axiosConfig';
 import "./style.css";
 import logo from "../../assets/Logo.svg";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../../components/LoginPageComponents/LoginForm";
 import PopupForm from "../../components/LoginPageComponents/PopupForm";
-// import CryptoJS from 'crypto-js';
+import CryptoJS from 'crypto-js';
 
-export default function LoginPage({ setIsAdmin }) {
+const LoginPage = ({ setIsAdmin }) => {
   const [data, setData] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedAge, setSelectedAge] = useState("");
   const [gender, setGender] = useState("");
   const [token, setToken] = useState("");
-  const [isNewCustomer, setIsNewCustomer] = useState(true);
+  const [isAgreeTerms, setIsAgreeTerms] = useState(false);
 
   const navigate = useNavigate();
   const ageOptions = [];
-  for (let i = 5; i <= 99; i++) {
+  for (let i = 18; i <= 99; i++) {
     ageOptions.push(i.toString());
   }
   const handleAgeChange = (event) => {
     setSelectedAge(event.target.value);
-  };
-  if (token) {
-    const decodedData = jwt_decode(token);
   }
+  const checkUserEmail = (emailToSend) => {
+    const data = { email: emailToSend, password: "" };
+    axios
+        .post(CHECK_USER_URL, data)
+        .then((response) => {
+          const { existingCustomer, isAdmin } = response.data;
+          if (isAdmin) {
+            setIsAdmin(isAdmin);
+            navigate("/customer");
+          }
+        })
+        .catch((error) => {
+          console.error("error sending email", error);
+        });
+  };
 
   /////
-
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tokenFromUrl = urlParams.get("token");
-    setIsNewCustomer(urlParams.get("isNewUser"));
+    const isNewUser  = urlParams.get("isNewUser")
     if (tokenFromUrl) {
       setToken(tokenFromUrl);
       const decodedData = jwt_decode(tokenFromUrl);
-      if (!isNewCustomer) {
+      checkUserEmail(decodedData.email)
+      if (isNewUser === 'true') {
         sessionStorage.setItem("userEmail", decodedData.email);
         openPopup();
       } else {
@@ -78,8 +90,7 @@ export default function LoginPage({ setIsAdmin }) {
       const dataToSend = {
         ...data,
         email: formik.values.email || data.email,
-        // password: CryptoJS.AES.encrypt(formik.values.password, 'encryptionKey').toString(),
-        password: formik.values.password,
+        password: CryptoJS.AES.encrypt(formik.values.password, 'encryptionKey').toString(),
         age: selectedAge,
         gender: gender,
       };
@@ -98,6 +109,7 @@ export default function LoginPage({ setIsAdmin }) {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
+
 
   const onOptionChange = (e) => {
     setGender(e.target.value);
@@ -139,6 +151,8 @@ export default function LoginPage({ setIsAdmin }) {
         openPopup={openPopup}
         handleSignInWithGoogle={handleSignInWithGoogle}
         setIsAdmin={setIsAdmin}
+        isAgreeTerms={isAgreeTerms}
+        setIsAgreeTerms={setIsAgreeTerms}
       />
       {/* Login Popup (selected age, gender) */}
       <PopupForm
@@ -151,6 +165,8 @@ export default function LoginPage({ setIsAdmin }) {
         isPopupOpen={isPopupOpen}
         closePopup={closePopup}
       />
+
     </div>
   );
 }
+export default LoginPage;

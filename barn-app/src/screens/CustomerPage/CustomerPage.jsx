@@ -7,7 +7,6 @@ import AdminPage from "../AdminPage/AdminPage"
 
 export default function CustomerPage({isAdmin}) {
   const userEmail = sessionStorage.getItem("userEmail");
-
   return (
     <>
       {isAdmin? (
