@@ -27,7 +27,7 @@ const LoginForm = ({
           sessionStorage.setItem("typeof", typeof isAdmin);
         } else if (existingCustomer) {
           navigate("/customer");
-          sessionStorage.setItem("userEmailForm", emailToSend);
+          sessionStorage.setItem("userEmail", emailToSend);
         } else {
           openPopup();
         }
