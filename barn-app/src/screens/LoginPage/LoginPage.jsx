@@ -17,6 +17,7 @@ const LoginPage = ({ setIsAdmin }) => {
   const [gender, setGender] = useState("");
   const [token, setToken] = useState("");
   const [isAgreeTerms, setIsAgreeTerms] = useState(false);
+  const [isReq, setIsReq] = useState(false)
 
   const navigate = useNavigate();
   const ageOptions = [];
@@ -116,7 +117,11 @@ const LoginPage = ({ setIsAdmin }) => {
   };
 
   const handleSignInWithGoogle = async () => {
+    if (isAgreeTerms) {
     window.location.href = AUTH_GOOGLE_URL;
+    } else {
+      setIsReq(true);
+    }
   };
   // /complete-data
   const sendUserData = async (values) => {
@@ -153,6 +158,8 @@ const LoginPage = ({ setIsAdmin }) => {
         setIsAdmin={setIsAdmin}
         isAgreeTerms={isAgreeTerms}
         setIsAgreeTerms={setIsAgreeTerms}
+        setIsReq={setIsReq}
+        isReq={isReq}
       />
       {/* Login Popup (selected age, gender) */}
       <PopupForm

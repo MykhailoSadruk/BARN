@@ -11,11 +11,14 @@ const LoginForm = ({
   setIsAdmin,
   isAgreeTerms,
   setIsAgreeTerms,
+  setIsReq,
+  isReq
 }) => {
   const navigate = useNavigate();
 
   const checkUserEmail = (emailToSend) => {
-    const data = { email: emailToSend, password: "" };
+    if(isAgreeTerms) {
+      const data = { email: emailToSend, password: "" };
     axios
       .post(CHECK_USER_URL, data)
       .then((response) => {
@@ -35,6 +38,9 @@ const LoginForm = ({
       .catch((error) => {
         console.error("error sending email", error);
       });
+    } else {
+      setIsReq(true)
+    }
   };
   return (
     <div className="login-form-wrapper">
@@ -79,7 +85,6 @@ const LoginForm = ({
         </div>
         <div>
           <button
-            disabled={!isAgreeTerms}
             onClick={() => {
               checkUserEmail(formik.values.email);
             }}
@@ -98,7 +103,6 @@ const LoginForm = ({
           <div>
             {/* redirect to userData from google auth */}
             <button
-              disabled={!isAgreeTerms}
               onClick={handleSignInWithGoogle}
               className="login-form-btn red-bg"
               type="submit"
@@ -110,8 +114,10 @@ const LoginForm = ({
         </div>
       </form>
       <Terms
+        setIsReq={setIsReq}
         isAgreeTerms={isAgreeTerms}
         setIsAgreeTerms={setIsAgreeTerms}
+        isReq={isReq}
       ></Terms>
     </div>
   );

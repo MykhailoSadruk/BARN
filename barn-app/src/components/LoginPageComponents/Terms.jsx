@@ -1,11 +1,12 @@
 import React from "react";
 
-export default function Terms({ isAgreeTerms, setIsAgreeTerms }) {
+export default function Terms({ isAgreeTerms, setIsAgreeTerms, setIsReq, isReq }) {
   const checkboxHandler = () => {
     setIsAgreeTerms(!isAgreeTerms);
+    setIsReq(false)
   };
   return (
-    <div className="terms-container ">
+    <div className={`terms-container ${isReq ? 'req-box' : ''}`} >
       <input type="checkbox" onChange={checkboxHandler} />I have read and agree
       to the{" "}
       <a
@@ -25,6 +26,9 @@ export default function Terms({ isAgreeTerms, setIsAgreeTerms }) {
       >
         Privacy Policy
       </a>
+      {isReq && (
+        <div className="req-field">This field is required</div>
+      )}
     </div>
   );
 }
