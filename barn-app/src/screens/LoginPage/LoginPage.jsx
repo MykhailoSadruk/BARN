@@ -144,7 +144,7 @@ const LoginPage = ({ setIsAdmin }) => {
         <div className="login-title-box">
           <h3 className="login-title">Welcome!</h3>
           <p className="login-descr">
-            Unisciti alla nostra community, registerati per esplorare ed
+            Unisciti alla nostra community, registrati per esplorare ed
             abbracciare il mondo della moda su misura per te.
           </p>
         </div>

@@ -39,7 +39,7 @@ export default function Procedures() {
           <img src={fastIcon} alt="delivery" className="procedure-img" />
           <h3 className="procedure-box-title">IL TUO ORDINE E’ IN ARRIVO</h3>
           <div className="procedure-box-descr">
-            Pagamento al momento della consegna in contanti
+            Pagamento al momento della consegna in contanti o con Satispay
           </div>
         </div>
       </div>

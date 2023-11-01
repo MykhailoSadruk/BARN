@@ -59,7 +59,7 @@ export default function DeliverDescr() {
                                 </div>
                                 <div className="caption">
                                     Pagamento al momento della consegna in
-                                    contanti
+                                    contanti o con Satispay
                                 </div>
                             </div>
                         </div>
